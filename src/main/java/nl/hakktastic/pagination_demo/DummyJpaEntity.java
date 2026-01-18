@@ -10,8 +10,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name = "large_entity")
-public class LargeJpaEntity {
+@Entity(name = "dummy_entity")
+public class DummyJpaEntity {
 
   @Id
   @Column(nullable = false)

@@ -1,7 +1,7 @@
 package nl.hakktastic.pagination_demo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.ListPagingAndSortingRepository;
 
-public interface LargeJpaEntityRepository extends JpaRepository<LargeJpaEntity, Long> {
+public interface DummyJpaEntityRepository extends ListPagingAndSortingRepository<DummyJpaEntity, Long> {
 
 }

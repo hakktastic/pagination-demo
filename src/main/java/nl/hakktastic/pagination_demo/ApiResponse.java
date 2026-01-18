@@ -1,15 +1,17 @@
-package nl.hakktastic.ratelimiter;
+package nl.hakktastic.pagination_demo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.time.LocalDateTime;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
-@Data
-@RequiredArgsConstructor(staticName = "of")
-public class ApiResponse<T> {
+@JsonInclude(Include.NON_EMPTY)
+@JsonPropertyOrder({"status", "timestamp", "path", "data"})
+public record ApiResponse<T>(
+    String status,
+    LocalDateTime timestamp,
+    String path,
+    String message,
+    T data) {
 
-  private final String Status;
-  private final LocalDateTime timestamp;
-  private final String message;
-  private final T data;
 }
