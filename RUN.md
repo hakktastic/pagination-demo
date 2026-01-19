@@ -25,6 +25,17 @@ Make sure you have the following installed:
    mvn clean install
 ```
 
+## 🖥️ Custom CSV file
+By default the database schema is filled with 1 million records. If you want to increase this, 
+please use following script to generate input:
+```shell
+# create i.e. five million entries
+for i in $(seq 1 5000000); do
+  echo "value_$i,value_$((i*2)),value_$((i*3)),value_$((i*4)),value_$((i*5))"
+done >> dummy_entity_5m.csv
+```
+
+
 ## ⚡Start Application
 
 ```shell      
