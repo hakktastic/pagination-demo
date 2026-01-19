@@ -1,41 +1,30 @@
 package nl.hakktastic.pagination_demo;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import java.net.URI;
 import lombok.val;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * @see <a href='https://datatracker.ietf.org/doc/html/rfc7807'>RFC7807</a>
+ */
 @RestControllerAdvice
 public class DemoRestControllerAdvice {
 
-  @ExceptionHandler(DummyEntityNotFoundException.class)
-  ResponseEntity<ApiResponse<String>> handleNotFound(DummyEntityNotFoundException dummyEntityNotFoundException, HttpServletRequest httpServletRequest) {
-
-    val apiResponse = new ApiResponse<>(
-        HttpStatus.NOT_FOUND.toString(),
-        LocalDateTime.now(),
-        httpServletRequest.getRequestURI(),
-        dummyEntityNotFoundException.getMessage(),
-        Strings.EMPTY);
-
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
-
-  }
+  private static final URI URI_PROBLEM_TYPE_ENTITY_NOT_FOUND = URI.create("https://dummy.example.com/problems/entity-not-found");
 
   @ExceptionHandler(IllegalArgumentException.class)
-  ResponseEntity<ApiResponse<String>> handleBadRequest(IllegalArgumentException illegalArgumentException, HttpServletRequest httpServletRequest) {
+  ProblemDetail handleBadRequest(IllegalArgumentException illegalArgumentException, HttpServletRequest httpServletRequest) {
 
-    val apiResponse = new ApiResponse<>(
-        HttpStatus.BAD_REQUEST.toString(),
-        LocalDateTime.now(),
-        httpServletRequest.getRequestURI(),
-        illegalArgumentException.getMessage(),
-        Strings.EMPTY);
+    val problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+    problem.setType(URI_PROBLEM_TYPE_ENTITY_NOT_FOUND);
+    problem.setTitle("Illegal Argument");
+    problem.setDetail(illegalArgumentException.getMessage());
+    problem.setInstance(URI.create(httpServletRequest.getRequestURI()));
 
-    return ResponseEntity.badRequest().body(apiResponse);
+    return problem;
   }
 }
