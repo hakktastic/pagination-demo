@@ -31,7 +31,10 @@ public final class ApiResponse {
         LocalDateTime.now(),
         httpServletRequest.getRequestURI(),
         httpServletRequest.getRemoteAddr(),
-        ApiResponseData.from(dummyJpaEntitiesPage).getApiResponseDataElements(),
+        dummyJpaEntitiesPage.getContent()
+            .stream()
+            .map(ApiResponseDataElement::from)
+            .toList(),
         ApiResponseMetadata.from(dummyJpaEntitiesPage)
     );
   }
