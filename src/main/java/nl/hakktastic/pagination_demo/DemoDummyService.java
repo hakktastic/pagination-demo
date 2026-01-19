@@ -13,8 +13,13 @@ public class DemoDummyService {
 
   private final DummyJpaEntityRepository dummyJpaEntityRepository;
 
-  public Page<DummyJpaEntity> getAllEntities(final int page, final int size) {
+  public Page<DummyJpaEntity> getAllEntitiesPageBased(final int page, final int size) {
     val pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+    return dummyJpaEntityRepository.findAll(pageable);
+  }
+
+  public Page<DummyJpaEntity> getAllEntitiesOffsetBased(final int offset, final int limit) {
+    val pageable = OffsetBasedPageRequest.of(offset, limit);
     return dummyJpaEntityRepository.findAll(pageable);
   }
 }

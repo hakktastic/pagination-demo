@@ -1,5 +1,14 @@
-### GET entities without pagination
-GET http://localhost:8080/api/v1/dummy-entities
+### GET - PAGE BASED - entities without pagination
+GET http://localhost:8080/api/v1/dummy-entities/page-based
 
-### GET entities with pagination
-GET http://localhost:8080/api/v1/dummy-entities?page=2&size=3
+### GET - PAGE BASED - entities with pagination
+GET http://localhost:8080/api/v1/dummy-entities/page-based?page=2&size=3
+
+### GET - OFSSET BASED - entities with
+GET http://localhost:8080/api/v1/dummy-entities/offset-based?offset=500000&limit=5
+
+### GET - OFSSET BASED - invalid offset
+GET http://localhost:8080/api/v1/dummy-entities/offset-based?offset=-1&limit=5
+
+### GET - OFSSET BASED - invalid limit
+GET http://localhost:8080/api/v1/dummy-entities/offset-based?offset=0&limit=0
