@@ -1,11 +1,8 @@
 package nl.hakktastic.pagination_demo;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,35 +18,33 @@ public class DemoRestController {
   private final DemoDummyService demoDummyService;
 
   @GetMapping("/page-based")
-  public ResponseEntity<ApiResponse<List<DummyJpaEntity>>> getDummyEntitiesPageBased(@RequestParam(defaultValue = "0", required = false) final int page,
+  public ResponseEntity<ApiResponse> getDummyEntitiesPageBased(
+      @RequestParam(defaultValue = "0", required = false) final int page,
       @RequestParam(defaultValue = "10", required = false) final int size,
       final HttpServletRequest httpServletRequest) {
 
-    val dummyEntitiesPage = demoDummyService.getAllEntitiesPageBased(page, size);
-    val apiResponse = new ApiResponse<>(
-        HttpStatus.OK.toString(),
-        LocalDateTime.now(),
-        httpServletRequest.getRequestURI(),
-        Strings.EMPTY,
-        dummyEntitiesPage.getContent(),
-        ApiResponseMetadata.from(dummyEntitiesPage));
+    val dummyJpaEntitiesPage = demoDummyService.getAllEntitiesPageBased(page, size);
+    val apiResponse = ApiResponse.of(
+        HttpStatus.OK,
+        httpServletRequest,
+        dummyJpaEntitiesPage
+    );
 
     return ResponseEntity.ok(apiResponse);
   }
 
   @GetMapping("/offset-based")
-  public ResponseEntity<ApiResponse<List<DummyJpaEntity>>> getDummyEntitiesOffsetBased(@RequestParam(defaultValue = "0") final int offset,
+  public ResponseEntity<ApiResponse> getDummyEntitiesOffsetBased(
+      @RequestParam(defaultValue = "0") final int offset,
       @RequestParam(defaultValue = "1") final int limit,
       final HttpServletRequest httpServletRequest) {
 
-    val dummyEntitiesPage = demoDummyService.getAllEntitiesOffsetBased(offset, limit);
-    val apiResponse = new ApiResponse<>(
-        HttpStatus.OK.toString(),
-        LocalDateTime.now(),
-        httpServletRequest.getRequestURI(),
-        Strings.EMPTY,
-        dummyEntitiesPage.getContent(),
-        ApiResponseMetadata.from(dummyEntitiesPage));
+    val dummyJpaEntitiesPage = demoDummyService.getAllEntitiesOffsetBased(offset, limit);
+    val apiResponse = ApiResponse.of(
+        HttpStatus.OK,
+        httpServletRequest,
+        dummyJpaEntitiesPage
+    );
 
     return ResponseEntity.ok(apiResponse);
   }

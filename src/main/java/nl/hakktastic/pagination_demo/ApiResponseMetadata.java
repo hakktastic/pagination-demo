@@ -1,10 +1,20 @@
 package nl.hakktastic.pagination_demo;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 
-public record ApiResponseMetadata(int pageNumber, int pageSize, int totalPages, long totalElements) {
+@Data
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public final class ApiResponseMetadata {
 
-  public static ApiResponseMetadata from(Page page) {
+  private final int pageNumber;
+  private final int pageSize;
+  private final int totalPages;
+  private final long totalElements;
+
+  public static ApiResponseMetadata from(Page<DummyJpaEntity> page) {
     return new ApiResponseMetadata(
         page.getNumber(),
         page.getSize(),
