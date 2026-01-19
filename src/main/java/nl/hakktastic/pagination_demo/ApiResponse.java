@@ -6,12 +6,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.time.LocalDateTime;
 
 @JsonInclude(Include.NON_EMPTY)
-@JsonPropertyOrder({"status", "timestamp", "path", "data"})
+@JsonPropertyOrder({"status", "timestamp", "path", "data", "metadata"})
 public record ApiResponse<T>(
     String status,
     LocalDateTime timestamp,
     String path,
     String message,
-    T data) {
+    T data,
+    ApiResponseMetadata metadata) {
 
 }
